@@ -1,0 +1,26 @@
+messages:
+  en:
+    prefix: "§f§lLumia§8 »§r§7"
+    plugin_enabled: "Plugin enabled successfully!"
+    plugin_disabled: "Plugin disabled."
+    luckperms_found: "LuckPerms detected and hooked."
+    luckperms_not_found: "LuckPerms not found. Permission features disabled."
+    help-title: "§8------------------------ §f§lLuima§r§8 ----------------------"
+    help-entry: "§f/lumia {command}: §7{description}"
+    reload-success: "§7Configuration reloaded successfully!"
+    use-help: "§8Use /lumia help to see available commands."
+    command-not-found: "§8Command not found. Use /lumia help to see available commands."
+    no-permission: "§cYou don't have permission to use this command."
+
+  es:
+    prefix: "§f§lLumia§8 »§r§7"
+    plugin_enabled: "Plugin activado correctamente."
+    plugin_disabled: "Plugin desactivado."
+    luckperms_found: "LuckPerms detectado e integrado."
+    luckperms_not_found: "LuckPerms no encontrado. Funciones de permisos deshabilitadas."
+    help-title: "§8------------------------ §f§lLuima§r§8 ----------------------"
+    help-entry: "§f/lumia {command}: §7{description}"
+    reload-success: "§7¡Configuración recargada exitosamente!"
+    use-help: "§8Usa /lumia help para ver los comandos disponibles."
+    command-not-found: "§8Comando no encontrado. Usa /lumia help para ver los comandos disponibles."
+    no-permission: "§cNo tienes permiso para usar este comando."

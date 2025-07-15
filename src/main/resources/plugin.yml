@@ -1,0 +1,15 @@
+name: Lumia
+version: '${version}'
+main: io.github.andreavfh.lumia.Lumia
+api-version: '1.21'
+prefix: '[Lumia]'
+softdepend: [LuckPerms]
+authors: [andreavfh]
+description: Level up your skills by performing different activities and unlock unique perks that enhance your gameplay, boost efficiency, and grant powerful abilities.
+
+commands:
+  lumia:
+    description: Main command for Lumia plugin
+    usage: /<command> <subcommand>
+    permission: lumia.use
+    permission-message: "You don't have permission to use this command."
