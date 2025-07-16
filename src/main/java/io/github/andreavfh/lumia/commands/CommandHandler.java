@@ -55,22 +55,22 @@ public class CommandHandler implements CommandExecutor, TabCompleter, SubCommand
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        LanguageConfig lang = plugin.getLanguageConfig();
+        var lang = plugin.getLanguageConfig();
+        var formatter = plugin.getMessageFormatter();
 
         if (args.length == 0) {
-            sender.sendMessage(lang.format("use-help"));
+            formatter.sendMessage(sender, lang.getRaw("use-help"));
             return true;
         }
 
-
         SubCommand sub = subCommands.get(args[0].toLowerCase());
         if (sub == null) {
-            sender.sendMessage(lang.format("command-not-found"));
+            formatter.sendMessage(sender, lang.getRaw("command-not-found"));
             return true;
         }
 
         if (sub.getPermission() != null && !sender.hasPermission(sub.getPermission())) {
-            sender.sendMessage(lang.format("no-permission"));
+            formatter.sendMessage(sender, lang.getRaw("no-permission"));
             return true;
         }
 

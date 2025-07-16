@@ -6,20 +6,26 @@ import io.github.andreavfh.lumia.config.Config;
 import io.github.andreavfh.lumia.config.LanguageConfig;
 import io.github.andreavfh.lumia.integrations.LuckPermsHook;
 import io.github.andreavfh.lumia.utils.LoggerWrapper;
+import io.github.andreavfh.lumia.utils.MessageFormatter;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Lumia extends JavaPlugin {
 
+    private BukkitAudiences adventure;
     private LanguageConfig languageConfig;
     private LoggerWrapper logger;
     private LuckPermsHook luckPermsHook;
+    private MessageFormatter messageFormatter;
     private Config config;
 
     @Override
     public void onEnable() {
         this.config = new Config(this);
         this.languageConfig = new LanguageConfig(this, config);
+        this.messageFormatter = new MessageFormatter(this);
         this.logger = new LoggerWrapper(getLogger(), languageConfig.getPrefix());
+        this.adventure = BukkitAudiences.create(this);
 
         logger.info("Initializing...");
 
@@ -38,17 +44,29 @@ public final class Lumia extends JavaPlugin {
 
         handler.registerSubCommand(new Help(this, handler));
 
-        logger.info(languageConfig.getMessage("plugin_enabled"));
+        logger.info(languageConfig.getRaw("plugin_enabled"));
     }
 
     @Override
     public void onDisable() {
-        logger.info(languageConfig.getMessage("plugin_disabled"));
+        if (adventure != null) {
+            adventure.close();
+            adventure = null;
+        }
+        logger.info(languageConfig.getRaw("plugin_disabled"));
+    }
+
+    public BukkitAudiences adventure() {
+        if (adventure == null) {
+            throw new IllegalStateException("Adventure not initialized");
+        }
+        return adventure;
     }
 
     public LoggerWrapper getLumiaLogger() {
         return logger;
     }
+    public MessageFormatter getMessageFormatter() {return messageFormatter;}
 
     public Config getPluginConfig() {
         return config;

@@ -37,14 +37,17 @@ public class Help implements SubCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         var lang = plugin.getLanguageConfig();
+        var formatter = plugin.getMessageFormatter();
 
-        sender.sendMessage(lang.translateColors(lang.getMessage("help-title")));
+        // Título del listado
+        formatter.sendMessage(sender, lang.getRaw("help-title"));
 
+        // Para cada subcomando, mostramos línea formateada
         provider.getSubCommands().forEach(sub -> {
-            String entry = lang.getMessage("help-entry")
+            String raw = lang.getRaw("help-entry")
                     .replace("{command}", sub.getName())
                     .replace("{description}", sub.getDescription());
-            sender.sendMessage(lang.translateColors(entry));
+            formatter.sendMessage(sender, raw);
         });
     }
 

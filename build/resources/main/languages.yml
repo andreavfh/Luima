@@ -11,6 +11,14 @@ messages:
     use-help: "§8Use /lumia help to see available commands."
     command-not-found: "§8Command not found. Use /lumia help to see available commands."
     no-permission: "§cYou don't have permission to use this command."
+    info-title: "§8------------------------ §f§lLuima§r§8 ----------------------"
+    info-name: "§7Name: §b{name}"
+    info-version: "§7Version: §b{version}"
+    info-author: "§7Author: §b{author}"
+    info-description: "§7Description: §f{description}"
+    info-website: "§7GitHub: §b{website}"
+    website-legend: "Visit our GitHub for more information"
+
 
   es:
     prefix: "§f§lLumia§8 »§r§7"
@@ -24,3 +32,10 @@ messages:
     use-help: "§8Usa /lumia help para ver los comandos disponibles."
     command-not-found: "§8Comando no encontrado. Usa /lumia help para ver los comandos disponibles."
     no-permission: "§cNo tienes permiso para usar este comando."
+    info-title: "§8------------------------ §f§lLuima§r§8 ----------------------"
+    info-name: "§7Nombre: §b{name}"
+    info-version: "§7Versión: §b{version}"
+    info-author: "§7Autor: §b{author}"
+    info-description: "§7Descripción: §f{description}"
+    info-website: "§7GitHub: §b{website}"
+    website-legend: "Visita nuestro GitHub para más información"

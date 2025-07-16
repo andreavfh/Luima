@@ -22,7 +22,6 @@ public class LanguageConfig {
     }
 
     private void loadConfigs() {
-
         this.language = config.getLanguage().toLowerCase(Locale.ROOT);
 
         File langFile = new File(plugin.getDataFolder(), "languages.yml");
@@ -31,30 +30,23 @@ public class LanguageConfig {
         }
         this.langConfig = YamlConfiguration.loadConfiguration(langFile);
 
-        this.prefix = translateColors(getMessage("prefix"));
+        // Se puede seguir manteniendo si lo necesitas para prefijos estáticos
+        this.prefix = langConfig.getString("messages." + language + ".prefix", "");
     }
 
     public void reload() {
         loadConfigs();
     }
 
-    public String translateColors(String input) {
-        return input == null ? "" : input.replace("&", "§");
+    public String getRaw(String key) {
+        return langConfig.getString("messages." + language + "." + key, "");
     }
 
-    public String formatRaw(String key) {
-        return langConfig.getString("messages." + language + "." + key, "");
+    public String getLanguage() {
+        return language;
     }
 
     public String getPrefix() {
         return prefix;
-    }
-
-    public String format(String key) {
-        return prefix + " " + getMessage(key);
-    }
-
-    public String getMessage(String key) {
-        return translateColors(formatRaw(key));
     }
 }

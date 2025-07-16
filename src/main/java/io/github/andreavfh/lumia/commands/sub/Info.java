@@ -7,36 +7,40 @@ import org.bukkit.command.CommandSender;
 import java.util.Collections;
 import java.util.List;
 
-public class Reload implements SubCommand {
+public class Info implements SubCommand {
 
     private final Lumia plugin;
 
-    public Reload(Lumia plugin) {
+    public Info(Lumia plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public String getName() {
-        return "reload";
+        return "info";
     }
 
     @Override
     public String getDescription() {
-        return "Reloads the plugin configuration and languages";
+        return "Displays plugin information";
     }
 
     @Override
     public String getPermission() {
-        return "lumia.reload";
+        return "lumia.info";
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        plugin.getPluginConfig().load();
-        plugin.getLanguageConfig().reload();
+        var lang = plugin.getLanguageConfig();
+        var formatter = plugin.getMessageFormatter();
 
-        String raw = plugin.getLanguageConfig().getRaw("reload-success");
-        plugin.getMessageFormatter().sendMessage(sender, raw);
+        formatter.sendMessage(sender, lang.getRaw("info-title"));
+        formatter.sendMessage(sender, lang.getRaw("info-name"));
+        formatter.sendMessage(sender, lang.getRaw("info-version"));
+        formatter.sendMessage(sender, lang.getRaw("info-author"));
+        formatter.sendMessage(sender, lang.getRaw("info-description"));
+        formatter.sendMessage(sender, lang.getRaw("info-website"));
     }
 
     @Override
