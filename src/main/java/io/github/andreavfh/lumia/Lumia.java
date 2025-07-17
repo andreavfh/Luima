@@ -4,7 +4,9 @@ import io.github.andreavfh.lumia.commands.CommandHandler;
 import io.github.andreavfh.lumia.commands.sub.Help;
 import io.github.andreavfh.lumia.config.Config;
 import io.github.andreavfh.lumia.config.LanguageConfig;
+import io.github.andreavfh.lumia.database.DatabaseManager;
 import io.github.andreavfh.lumia.integrations.LuckPermsHook;
+import io.github.andreavfh.lumia.skill.SkillManager;
 import io.github.andreavfh.lumia.utils.LoggerWrapper;
 import io.github.andreavfh.lumia.utils.MessageFormatter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -19,6 +21,9 @@ public final class Lumia extends JavaPlugin {
     private MessageFormatter messageFormatter;
     private Config config;
 
+    private DatabaseManager databaseManager;
+    private SkillManager skillManager;
+
     @Override
     public void onEnable() {
         this.config = new Config(this);
@@ -29,7 +34,6 @@ public final class Lumia extends JavaPlugin {
 
         logger.info("Initializing...");
 
-        // Inicializar integración con LuckPerms
         this.luckPermsHook = new LuckPermsHook(this);
         if (luckPermsHook.isHooked()) {
             logger.info("LuckPerms integration enabled. You can use permissions in commands and features.");
@@ -37,12 +41,24 @@ public final class Lumia extends JavaPlugin {
             logger.warning("LuckPerms integration not found. Some features may not work as expected. Make sure LuckPerms is installed and enabled.");
         }
 
-        // Comandos
+        this.databaseManager = new DatabaseManager(this);
+        if (!databaseManager.connect()) {
+            logger.info("Database connection failed. Disabling plugin.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        this.skillManager = new SkillManager(databaseManager.getSqlStorage());
+
+
         CommandHandler handler = new CommandHandler(this);
         getCommand("lumia").setExecutor(handler);
         getCommand("lumia").setTabCompleter(handler);
 
         handler.registerSubCommand(new Help(this, handler));
+
+        RegisterListeners listeners = new RegisterListeners();
+        listeners.registerAllListeners(this, skillManager);
 
         logger.info(languageConfig.getRaw("plugin_enabled"));
     }
@@ -53,6 +69,12 @@ public final class Lumia extends JavaPlugin {
             adventure.close();
             adventure = null;
         }
+
+        // Cerrar conexión SQL
+        if (databaseManager != null) {
+            databaseManager.disconnect();
+        }
+
         logger.info(languageConfig.getRaw("plugin_disabled"));
     }
 
@@ -66,7 +88,10 @@ public final class Lumia extends JavaPlugin {
     public LoggerWrapper getLumiaLogger() {
         return logger;
     }
-    public MessageFormatter getMessageFormatter() {return messageFormatter;}
+
+    public MessageFormatter getMessageFormatter() {
+        return messageFormatter;
+    }
 
     public Config getPluginConfig() {
         return config;
@@ -78,5 +103,14 @@ public final class Lumia extends JavaPlugin {
 
     public LuckPermsHook getLuckPermsHook() {
         return luckPermsHook;
+    }
+
+    // NUEVOS GETTERS
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    public SkillManager getSkillManager() {
+        return skillManager;
     }
 }

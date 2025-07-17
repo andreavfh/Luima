@@ -18,9 +18,12 @@ public class Config {
         plugin.saveDefaultConfig();
         plugin.reloadConfig();
         this.language = plugin.getConfig().getString("language", "en").toLowerCase(Locale.ROOT);
+
     }
 
     public String getLanguage() {
         return language;
     }
+
+
 }
