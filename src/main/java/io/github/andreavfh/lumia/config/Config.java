@@ -1,5 +1,6 @@
 package io.github.andreavfh.lumia.config;
 
+import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Locale;
@@ -23,6 +24,18 @@ public class Config {
 
     public String getLanguage() {
         return language;
+    }
+
+    public int getXpPerMaterial(Material material) {
+        return plugin.getConfig().getInt("mining-xp." + material.name(), 0);
+    }
+
+    public int getBaseXp() {
+        return plugin.getConfig().getInt("base-xp", 80);
+    }
+
+    public double getProgressionXp() {
+        return plugin.getConfig().getDouble("progression", 1.30);
     }
 
 

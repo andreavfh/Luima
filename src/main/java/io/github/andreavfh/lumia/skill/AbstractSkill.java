@@ -2,6 +2,7 @@ package io.github.andreavfh.lumia.skill;
 
 import io.github.andreavfh.lumia.Lumia;
 import io.github.andreavfh.lumia.config.LanguageConfig;
+import io.github.andreavfh.lumia.utils.Convert;
 import io.github.andreavfh.lumia.utils.SkillXPUtil;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -44,6 +45,9 @@ public abstract class AbstractSkill implements ISkill {
     @Override
     public void addXP(double amount) {
         this.xp += amount;
+        Lumia plugin = JavaPlugin.getPlugin(Lumia.class);
+        plugin.getBossBarManager().showXP(player, type.name(), (int) xp, (int) getXPForNextLevel(), level);
+
         while (canLevelUp()) {
             levelUp();
         }
@@ -85,10 +89,15 @@ public abstract class AbstractSkill implements ISkill {
 
     protected void onLevelUp() {
         Lumia plugin = JavaPlugin.getPlugin(Lumia.class);
+        LanguageConfig l = plugin.getLanguageConfig();
+        String formerLevelRoman = Convert.toRoman(level - 1);
+        String formerSkillName = l.getRaw("skill_" + type.name().toLowerCase() + "_name") + " " + formerLevelRoman;
+        String currentLevelRoman = Convert.toRoman(level);
+        String currentSkillName = l.getRaw("skill_" + type.name().toLowerCase() + "_name") + " " + currentLevelRoman;
         String message = plugin.getLanguageConfig()
                 .getRaw("skills_level_up")
-                .replace("{skill}", type.name())
-                .replace("{level}", String.valueOf(level))
+                .replace("{formerSkill}", formerSkillName)
+                .replace("{currentSkill}", currentSkillName)
                 .replace("{rank}", getRank());
         plugin.getMessageFormatter().sendMessage(player, message);
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);

@@ -1,10 +1,17 @@
 package io.github.andreavfh.lumia.utils;
 
+import io.github.andreavfh.lumia.Lumia;
+import io.github.andreavfh.lumia.config.Config;
+import org.bukkit.plugin.java.JavaPlugin;
+
 public class SkillXPUtil {
 
     public static double getXPRequiredForLevel(int level) {
-        if (level <= 1) return 50;
-        return 50 * Math.pow(1.25, level - 1);
+        JavaPlugin plugin = JavaPlugin.getPlugin(Lumia.class);
+        Config config = new Config(plugin);
+
+        if (level <= 1) return config.getBaseXp();
+        return config.getBaseXp() * Math.pow(config.getProgressionXp(), level - 1);
     }
 }
 

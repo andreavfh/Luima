@@ -9,6 +9,7 @@ import io.github.andreavfh.lumia.integrations.LuckPermsHook;
 import io.github.andreavfh.lumia.skill.SkillManager;
 import io.github.andreavfh.lumia.utils.LoggerWrapper;
 import io.github.andreavfh.lumia.utils.MessageFormatter;
+import io.github.andreavfh.lumia.utils.SkillBossBarManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,6 +24,7 @@ public final class Lumia extends JavaPlugin {
 
     private DatabaseManager databaseManager;
     private SkillManager skillManager;
+    private SkillBossBarManager bossBarManager;
 
     @Override
     public void onEnable() {
@@ -59,6 +61,8 @@ public final class Lumia extends JavaPlugin {
 
         RegisterListeners listeners = new RegisterListeners();
         listeners.registerAllListeners(this, skillManager);
+
+        this.bossBarManager = new SkillBossBarManager(this);
 
         logger.info(languageConfig.getRaw("plugin_enabled"));
     }
@@ -108,6 +112,10 @@ public final class Lumia extends JavaPlugin {
     // NUEVOS GETTERS
     public DatabaseManager getDatabaseManager() {
         return databaseManager;
+    }
+
+    public SkillBossBarManager getBossBarManager() {
+        return bossBarManager;
     }
 
     public SkillManager getSkillManager() {
