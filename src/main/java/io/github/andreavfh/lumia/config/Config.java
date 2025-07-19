@@ -31,11 +31,11 @@ public class Config {
     }
 
     public int getBaseXp() {
-        return plugin.getConfig().getInt("base-xp", 80);
+        return plugin.getConfig().getInt("skill.base-xp", 80);
     }
 
     public double getProgressionXp() {
-        return plugin.getConfig().getDouble("progression", 1.30);
+        return plugin.getConfig().getDouble("skill.progression", 1.30);
     }
 
 

@@ -22,20 +22,21 @@ public class SkillBossBarManager {
         this.plugin = plugin;
     }
 
+    private final Map<Player, Integer> removalTasks = new HashMap<>();
+
     public void showXP(Player player, String s, int currentXP, int requiredXP, int level) {
         BossBar bar = bossBars.computeIfAbsent(player, p ->
                 Bukkit.createBossBar(" ", BarColor.GREEN, BarStyle.SEGMENTED_10)
         );
+
         Config config = new Config(plugin);
         LanguageConfig languageConfig = new LanguageConfig(plugin, config);
 
         String skillName = languageConfig.getRaw("skill_" + s.toLowerCase() + "_name");
-
         double progress = Math.min((double) currentXP / requiredXP, 1.0);
         bar.setProgress(progress);
 
         String levelInRoman = Convert.toRoman(level);
-
         bar.setTitle(ChatColor.GRAY + skillName + " " + ChatColor.DARK_GRAY + levelInRoman);
         bar.setColor(BarColor.BLUE);
 
@@ -43,15 +44,15 @@ public class SkillBossBarManager {
             bar.addPlayer(player);
         }
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            bar.removePlayer(player);
-        }, 60L); //
-    }
-
-    public void clear(Player player) {
-        BossBar bar = bossBars.remove(player);
-        if (bar != null) {
-            bar.removeAll();
+        if (removalTasks.containsKey(player)) {
+            Bukkit.getScheduler().cancelTask(removalTasks.get(player));
         }
+
+        int taskId = Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            bar.removePlayer(player);
+            removalTasks.remove(player);
+        }, 60L).getTaskId();
+
+        removalTasks.put(player, taskId);
     }
 }
