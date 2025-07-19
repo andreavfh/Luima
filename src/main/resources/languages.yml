@@ -1,25 +1,43 @@
 messages:
   en:
+    # Prefix used at the beginning of all plugin messages
     prefix: "§f§lLumia§8 »§r§7"
-    plugin_enabled: "Plugin enabled successfully!"
-    plugin_disabled: "Plugin disabled."
-    luckperms_found: "LuckPerms detected and hooked."
-    luckperms_not_found: "LuckPerms not found. Permission features disabled."
-    help-title: "§8------------------------ §f§lLuima§r§8 ----------------------"
-    help-entry: "§f/lumia {command}: §7{description}"
-    reload-success: "§7Configuration reloaded successfully!"
-    use-help: "§8Use /lumia help to see available commands."
-    command-not-found: "§8Command not found. Use /lumia help to see available commands."
-    no-permission: "§cYou don't have permission to use this command."
+
+    # Plugin status messages
+    plugin_enabled: "Plugin enabled successfully!"            # Message shown when the plugin is enabled
+    plugin_disabled: "Plugin disabled."                       # Message shown when the plugin is disabled
+
+    # LuckPerms detection messages
+    luckperms_found: "LuckPerms detected and hooked."         # Displayed when LuckPerms is found
+    luckperms_not_found: "LuckPerms not found. Permission features disabled."  # Displayed if LuckPerms is missing
+
+    # Help command messages
+    help-title: "§8------------------------ §f§lLuima§r§8 ----------------------"  # Header for the help command
+    help-entry: "§f/lumia {command}: §7{description}"         # Help entry format for each command
+
+    # Reload command message
+    reload-success: "§7Configuration reloaded successfully!"  # Message shown after /lumia reload
+
+    # Command usage and errors
+    use-help: "§8Use /lumia help to see available commands."  # Suggests using the help command
+    command-not-found: "§8Command not found. Use /lumia help to see available commands."  # When a command doesn't exist
+    no-permission: "§cYou don't have permission to use this command."  # When the user lacks permission
+
+    # Info command messages
     info-title: "§8------------------------ §f§lLuima§r§8 ----------------------"
-    info-name: "§7Name: §b{name}"
-    info-version: "§7Version: §b{version}"
-    info-author: "§7Author: §b{author}"
-    info-description: "§7Description: §f{description}"
-    info-website: "§7GitHub: §b{website}"
-    website-legend: "Visit our GitHub for more information"
+    info-name: "§7Name: §b{name}"                             # Plugin name
+    info-version: "§7Version: §b{version}"                   # Plugin version
+    info-author: "§7Author: §b{author}"                      # Plugin author
+    info-description: "§7Description: §f{description}"       # Plugin description
+    info-website: "§7GitHub: §b{website}"                    # Plugin website (GitHub)
+    website-legend: "Visit our GitHub for more information"  # Website legend tooltip
+
+    # Skill level up message
     skills_level_up: "§7You have leveled up from §b{formerSkill} §7to §b{currentSkill}§7 (§b{rank}§7)!"
 
+    nearby_mineral: "§7Nearby mineral detected: §b{mineral}§7."  # Message when a nearby mineral is detected
+
+    # Skill names
     skill_farming_name: "Farming"
     skill_combat_name: "Combat"
     skill_fishing_name: "Fishing"
@@ -31,7 +49,7 @@ messages:
     skill_foraging_name: "Foraging"
     skill_enchanting_name: "Enchanting"
 
-
+    # Skill ranks by tier (0–5)
     skills_farming_0: "Farming Novice"
     skills_farming_1: "Farming Apprentice"
     skills_farming_2: "Farming Adept"
@@ -102,20 +120,31 @@ messages:
     skills_enchanting_4: "Enchanting Master"
     skills_enchanting_5: "Enchanting Legend"
 
-
-
   es:
+    # Prefijo usado en todos los mensajes del plugin
     prefix: "§f§lLumia§8 »§r§7"
+
+    # Mensajes de estado del plugin
     plugin_enabled: "Plugin activado correctamente."
     plugin_disabled: "Plugin desactivado."
+
+    # Detección de LuckPerms
     luckperms_found: "LuckPerms detectado e integrado."
     luckperms_not_found: "LuckPerms no encontrado. Funciones de permisos deshabilitadas."
+
+    # Comando de ayuda
     help-title: "§8------------------------ §f§lLuima§r§8 ----------------------"
     help-entry: "§f/lumia {command}: §7{description}"
+
+    # Recarga de configuración
     reload-success: "§7¡Configuración recargada exitosamente!"
+
+    # Uso de comandos y errores
     use-help: "§8Usa /lumia help para ver los comandos disponibles."
     command-not-found: "§8Comando no encontrado. Usa /lumia help para ver los comandos disponibles."
     no-permission: "§cNo tienes permiso para usar este comando."
+
+    # Comando de información
     info-title: "§8------------------------ §f§lLuima§r§8 ----------------------"
     info-name: "§7Nombre: §b{name}"
     info-version: "§7Versión: §b{version}"
@@ -123,8 +152,13 @@ messages:
     info-description: "§7Descripción: §f{description}"
     info-website: "§7GitHub: §b{website}"
     website-legend: "Visita nuestro GitHub para más información"
+
+    # Subida de nivel de habilidades
     skills_level_up: "§7Has subido de nivel §b{skill} §7al nivel §b{level}§7 (§b{rank}§7)!"
 
+    nearby_mineral: "§7Mineral cercano detectado: §b{mineral}§7."  # Mensaje cuando se detecta un mineral cercano
+
+    # Nombres de habilidades
     skill_farming_name: "Agricultura"
     skill_combat_name: "Combate"
     skill_fishing_name: "Pesca"
@@ -136,6 +170,7 @@ messages:
     skill_foraging_name: "Recolección"
     skill_enchanting_name: "Encantamientos"
 
+    # Rangos de habilidades por nivel (0–5)
     skills_farming_0: "Novato en Agricultura"
     skills_farming_1: "Aprendiz de Agricultura"
     skills_farming_2: "Adept@ de Agricultura"
@@ -205,5 +240,3 @@ messages:
     skills_enchanting_3: "Experto en Encantamientos"
     skills_enchanting_4: "Maestro Encantador"
     skills_enchanting_5: "Leyenda de los Encantamientos"
-
-

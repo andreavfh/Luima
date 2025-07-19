@@ -2,7 +2,7 @@ name: Lumia
 version: '1.0-SNAPSHOT'
 main: io.github.andreavfh.lumia.Lumia
 api-version: '1.21'
-prefix: '[Lumia]'
+prefix: 'Lumia'
 softdepend: [LuckPerms]
 authors: [andreavfh]
 website: 'https://github.com/andreavfh/Luima'
