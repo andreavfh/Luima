@@ -13,6 +13,10 @@ import io.github.andreavfh.lumia.utils.SkillBossBarManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Main class for the Lumia plugin.
+ * Handles initialization, configuration, and management of plugin components.
+ */
 public final class Lumia extends JavaPlugin {
 
     private BukkitAudiences adventure;
@@ -26,6 +30,10 @@ public final class Lumia extends JavaPlugin {
     private SkillManager skillManager;
     private SkillBossBarManager bossBarManager;
 
+    /**
+     * Called when the plugin is enabled.
+     * Initializes configurations, integrations, and plugin components.
+     */
     @Override
     public void onEnable() {
         this.config = new Config(this);
@@ -52,7 +60,6 @@ public final class Lumia extends JavaPlugin {
 
         this.skillManager = new SkillManager(databaseManager.getSqlStorage());
 
-
         CommandHandler handler = new CommandHandler(this);
         getCommand("lumia").setExecutor(handler);
         getCommand("lumia").setTabCompleter(handler);
@@ -67,6 +74,10 @@ public final class Lumia extends JavaPlugin {
         logger.info(languageConfig.getRaw("plugin_enabled"));
     }
 
+    /**
+     * Called when the plugin is disabled.
+     * Cleans up resources and closes connections.
+     */
     @Override
     public void onDisable() {
         if (adventure != null) {
@@ -74,7 +85,6 @@ public final class Lumia extends JavaPlugin {
             adventure = null;
         }
 
-        // Cerrar conexión SQL
         if (databaseManager != null) {
             databaseManager.disconnect();
         }
@@ -82,6 +92,12 @@ public final class Lumia extends JavaPlugin {
         logger.info(languageConfig.getRaw("plugin_disabled"));
     }
 
+    /**
+     * Returns the Adventure API instance for the plugin.
+     *
+     * @return The BukkitAudiences instance.
+     * @throws IllegalStateException If Adventure is not initialized.
+     */
     public BukkitAudiences adventure() {
         if (adventure == null) {
             throw new IllegalStateException("Adventure not initialized");
@@ -89,35 +105,74 @@ public final class Lumia extends JavaPlugin {
         return adventure;
     }
 
+    /**
+     * Returns the logger wrapper for the plugin.
+     *
+     * @return The logger wrapper instance.
+     */
     public LoggerWrapper getLumiaLogger() {
         return logger;
     }
 
+    /**
+     * Returns the message formatter for the plugin.
+     *
+     * @return The message formatter instance.
+     */
     public MessageFormatter getMessageFormatter() {
         return messageFormatter;
     }
 
+    /**
+     * Returns the plugin's configuration instance.
+     *
+     * @return The configuration instance.
+     */
     public Config getPluginConfig() {
         return config;
     }
 
+    /**
+     * Returns the language configuration instance.
+     *
+     * @return The language configuration instance.
+     */
     public LanguageConfig getLanguageConfig() {
         return languageConfig;
     }
 
+    /**
+     * Returns the LuckPerms integration hook.
+     *
+     * @return The LuckPermsHook instance.
+     */
     public LuckPermsHook getLuckPermsHook() {
         return luckPermsHook;
     }
 
-    // NUEVOS GETTERS
+    /**
+     * Returns the database manager for the plugin.
+     *
+     * @return The database manager instance.
+     */
     public DatabaseManager getDatabaseManager() {
         return databaseManager;
     }
 
+    /**
+     * Returns the boss bar manager for the plugin.
+     *
+     * @return The boss bar manager instance.
+     */
     public SkillBossBarManager getBossBarManager() {
         return bossBarManager;
     }
 
+    /**
+     * Returns the skill manager for the plugin.
+     *
+     * @return The skill manager instance.
+     */
     public SkillManager getSkillManager() {
         return skillManager;
     }

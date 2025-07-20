@@ -37,6 +37,20 @@ messages:
 
     nearby_mineral: "§7Nearby mineral detected: §b{mineral}§7."  # Message when a nearby mineral is detected
 
+    damage_evaded: "§7You evaded §8damage!"  # Message when damage is evaded
+
+    agility_boost_enabled: "§7Agility boost enabled!"  # Message when agility boost is activated
+
+    fury_enabled: "§7Fury mode enabled!"  # Message when fury mode is activated
+
+    attack_evaded: "§7You evaded an attack!"  # Message when an attack is evaded
+
+    critical_bow_hit: "§7You landed a critical hit with your bow!"  # Message when a critical bow hit occurs
+
+    stun_arrow: "§7Stun arrow!"  # Message when a stun arrow is used
+
+    alchemy_bonus_potion: "§7You duplicated a potion!"  # Message when a potion is duplicated
+
     # Skill names
     skill_farming_name: "Farming"
     skill_combat_name: "Combat"
@@ -157,6 +171,18 @@ messages:
     skills_level_up: "§7Has subido de nivel §b{skill} §7al nivel §b{level}§7 (§b{rank}§7)!"
 
     nearby_mineral: "§7Mineral cercano detectado: §b{mineral}§7."  # Mensaje cuando se detecta un mineral cercano
+
+    damage_evaded: "§7¡Has evadido el daño!"  # Mensaje cuando se evade daño
+
+    agility_boost_enabled: "§7¡Potenciador de agilidad activado!"  # Mensaje cuando se activa un potenciador de agilidad
+
+    fury_enabled: "§7¡Modo furia activado!"  # Mensaje cuando se activa el modo furia
+
+    attack_evaded: "§7¡Has evadido un ataque!"  # Mensaje cuando se evade un ataque
+
+    stun_arrow: "§7¡Flecha aturdidora!"  # Mensaje cuando se usa una flecha aturdidora
+
+    alchemy_bonus_potion: "§7¡Has duplicado una poción!"  # Mensaje cuando se duplica una poción
 
     # Nombres de habilidades
     skill_farming_name: "Agricultura"

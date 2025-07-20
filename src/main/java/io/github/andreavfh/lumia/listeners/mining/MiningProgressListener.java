@@ -40,7 +40,7 @@ public class MiningProgressListener implements Listener {
 
         Material normalizedMaterial = Material.matchMaterial(normalized);
         if (normalizedMaterial != null && validator.isValidTool(tool, normalizedMaterial)) {
-            int xp = config.getXpPerMaterial(normalizedMaterial);
+            double xp = config.getXpForMaterial(SkillType.MINING, normalizedMaterial);
             skill.addXP(xp);
         }
     }

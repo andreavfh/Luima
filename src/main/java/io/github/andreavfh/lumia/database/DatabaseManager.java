@@ -13,11 +13,20 @@ public class DatabaseManager {
     private Connection connection;
     private SQLStorage sqlStorage;
 
-
+    /**
+     * Constructs a new DatabaseManager for managing SQLite connections.
+     *
+     * @param plugin The Lumia plugin instance.
+     */
     public DatabaseManager(Lumia plugin) {
         this.plugin = plugin;
     }
 
+    /**
+     * Establishes a connection to the SQLite database.
+     *
+     * @return True if the connection is successful, false otherwise.
+     */
     public boolean connect() {
         try {
             File dataFolder = plugin.getDataFolder();
@@ -40,15 +49,28 @@ public class DatabaseManager {
         }
     }
 
-
+    /**
+     * Retrieves the current SQLite database connection.
+     *
+     * @return The active database connection.
+     */
     public Connection getConnection() {
         return connection;
     }
 
+    /**
+     * Retrieves the SQLStorage instance for managing database operations.
+     *
+     * @return The SQLStorage instance.
+     */
     public SQLStorage getSqlStorage() {
         return sqlStorage;
     }
 
+    /**
+     * Closes the SQLite database connection.
+     * Logs the status of the disconnection process.
+     */
     public void disconnect() {
         if (connection != null) {
             try {

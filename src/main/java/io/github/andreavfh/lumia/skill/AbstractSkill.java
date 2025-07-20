@@ -38,26 +38,51 @@ public abstract class AbstractSkill implements ISkill {
         this.languageConfig = plugin.getLanguageConfig();
     }
 
+/**
+ * Returns the type of the skill.
+ *
+ * @return The skill type.
+ */
     @Override
     public SkillType getType() {
         return type;
     }
 
+    /**
+     * Returns the current level of the skill.
+     *
+     * @return The current skill level.
+     */
     @Override
     public int getLevel() {
         return level;
     }
 
+    /**
+     * Returns the current XP of the skill.
+     *
+     * @return The current XP value.
+     */
     @Override
     public double getCurrentXP() {
         return xp;
     }
 
+    /**
+     * Calculates the XP required for the next level.
+     *
+     * @return The XP required to reach the next level.
+     */
     @Override
     public double getXPForNextLevel() {
-        return SkillXPUtil.getXPRequiredForLevel(level);
+        return SkillXPUtil.getXPRequiredForLevel(level, type);
     }
 
+    /**
+     * Adds XP to the skill and handles level-up logic.
+     *
+     * @param amount The amount of XP to add.
+     */
     @Override
     public void addXP(double amount) {
         this.xp += amount;
@@ -75,11 +100,19 @@ public abstract class AbstractSkill implements ISkill {
         }
     }
 
+    /**
+     * Checks if the skill can level up based on the current XP.
+     *
+     * @return True if the skill can level up, false otherwise.
+     */
     @Override
     public boolean canLevelUp() {
         return xp >= getXPForNextLevel();
     }
 
+    /**
+     * Handles the level-up process, including XP adjustment and notifications.
+     */
     @Override
     public void levelUp() {
         double xpRequired = getXPForNextLevel();
@@ -89,21 +122,42 @@ public abstract class AbstractSkill implements ISkill {
         onLevelUp();
     }
 
+    /**
+     * Calculates the XP required for a specific level.
+     *
+     * @param level The level to calculate the XP for.
+     * @return The XP required for the specified level.
+     */
     @Override
     public double getXPRequiredForLevel(int level) {
-        return SkillXPUtil.getXPRequiredForLevel(level);
+        return SkillXPUtil.getXPRequiredForLevel(level, type);
     }
 
+    /**
+     * Returns the progress percentage towards the next level.
+     *
+     * @return The progress percentage as a value between 0.0 and 1.0.
+     */
     @Override
     public double getProgressPercent() {
         return Math.min(1.0, xp / getXPForNextLevel());
     }
 
+    /**
+     * Calculates the skill's tier based on its level.
+     *
+     * @return The tier of the skill (maximum is 5).
+     */
     @Override
     public int getTier() {
-        return Math.min(level / 10, 5); // Max tier is 5
+        return Math.min(level / 10, 5);
     }
 
+    /**
+     * Retrieves the rank of the skill based on its tier and type.
+     *
+     * @return The rank of the skill as a string.
+     */
     @Override
     public String getRank() {
         final String key = "skills_" + type.name().toLowerCase() + "_" + getTier();

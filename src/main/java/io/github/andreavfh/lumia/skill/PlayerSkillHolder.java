@@ -12,6 +12,11 @@ public class PlayerSkillHolder implements ISkillHolder {
 
     private final Player player;
 
+    /**
+     * Constructs a new PlayerSkillHolder for a given player.
+     *
+     * @param player The player associated with this skill holder.
+     */
     public PlayerSkillHolder(Player player) {
         this.player = player;
 
@@ -27,16 +32,33 @@ public class PlayerSkillHolder implements ISkillHolder {
         skills.put(SkillType.SMITHING, new SmithingSkill(player));
     }
 
+    /**
+     * Retrieves the skill associated with the specified type.
+     *
+     * @param type The type of skill to retrieve.
+     * @return The skill associated with the given type.
+     */
     @Override
     public ISkill getSkill(SkillType type) {
         return skills.get(type);
     }
 
+    /**
+     * Retrieves all skills associated with the skill holder.
+     *
+     * @return A map containing all skills, where the key is the skill type and the value is the skill instance.
+     */
     @Override
     public Map<SkillType, ISkill> getAllSkills() {
         return skills;
     }
 
+    /**
+     * Adds experience points (XP) to a specific skill.
+     *
+     * @param type The type of skill to add XP to.
+     * @param xp   The amount of XP to add.
+     */
     @Override
     public void addSkillXP(SkillType type, double xp) {
         ISkill skill = skills.get(type);
@@ -45,6 +67,11 @@ public class PlayerSkillHolder implements ISkillHolder {
         }
     }
 
+    /**
+     * Calculates the total level of all skills combined.
+     *
+     * @return The total level of all skills.
+     */
     @Override
     public int getTotalSkillLevel() {
         return skills.values().stream()

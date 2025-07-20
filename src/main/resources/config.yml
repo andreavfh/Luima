@@ -1,14 +1,52 @@
 language: "en"  # Default language for the plugin, can be changed to 'es' for Spanish or other supported languages.
+
 skill:
-  base-xp: 80
-  progression: 1.35  # Multiplier for XP needed for each level
-mining-xp:
-  COAL_ORE: 2
-  COPPER_ORE: 3
-  IRON_ORE: 4
-  LAPIS_ORE: 5
-  REDSTONE_ORE: 5
-  GOLD_ORE: 6
-  EMERALD_ORE: 8
-  DIAMOND_ORE: 10
+  agility:
+    base-xp: 100
+    progression: 1.4
+    xp-per-action: 0.2
+  alchemy:
+    base-xp: 100
+    progression: 1.4
+    xp-per-action: 10
+  archery:
+    base-xp: 100
+    progression: 1.4
+    xp-per-action: 5
+  combat:
+    base-xp: 100
+    progression: 1.4
+    xp-per-action: 20
+  enchanting:
+    base-xp: 100
+    progression: 1.4
+    xp-per-action: 15
+  farming:
+    base-xp: 100
+    progression: 1.4
+    xp-per-action: 5
+  fishing:
+    base-xp: 100
+    progression: 1.4
+    xp-per-action: 15
+  foraging:
+    base-xp: 100
+    progression: 1.4
+    xp-per-action: 4
+  mining:
+    base-xp: 100
+    progression: 1.4
+    xp-per-action:
+      COAL_ORE: 2
+      COPPER_ORE: 3
+      IRON_ORE: 4
+      LAPIS_ORE: 5
+      REDSTONE_ORE: 5
+      GOLD_ORE: 6
+      EMERALD_ORE: 8
+      DIAMOND_ORE: 10
+  smithing:
+    base-xp: 100
+    progression: 1.4
+    xp-per-action: 20
 
