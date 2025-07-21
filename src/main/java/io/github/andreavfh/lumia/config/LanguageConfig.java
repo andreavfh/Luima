@@ -7,6 +7,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.Locale;
 
+/**
+ * Handles the loading and management of language-specific configurations for the plugin.
+ * Provides methods to retrieve localized messages and prefixes based on the configured language.
+ */
 public class LanguageConfig {
 
     private final JavaPlugin plugin;
@@ -15,12 +19,22 @@ public class LanguageConfig {
     private String language;
     private String prefix;
 
+    /**
+     * Constructs a new LanguageConfig instance.
+     *
+     * @param plugin The JavaPlugin instance associated with this configuration.
+     * @param config The main configuration instance for the plugin.
+     */
     public LanguageConfig(JavaPlugin plugin, Config config) {
         this.plugin = plugin;
         this.config = config;
         loadConfigs();
     }
 
+    /**
+     * Loads the language configuration file and initializes language-specific settings.
+     * If the language file does not exist, it is created from the plugin's resources.
+     */
     private void loadConfigs() {
         this.language = config.getLanguage().toLowerCase(Locale.ROOT);
 
@@ -30,22 +44,41 @@ public class LanguageConfig {
         }
         this.langConfig = YamlConfiguration.loadConfiguration(langFile);
 
-        // Se puede seguir manteniendo si lo necesitas para prefijos estáticos
+        // Loads the prefix for the configured language.
         this.prefix = langConfig.getString("messages." + language + ".prefix", "");
     }
 
+    /**
+     * Reloads the language configuration, refreshing all settings.
+     */
     public void reload() {
         loadConfigs();
     }
 
+    /**
+     * Retrieves a raw message string from the language configuration.
+     *
+     * @param key The key of the message to retrieve.
+     * @return The localized message, or an empty string if the key is not found.
+     */
     public String getRaw(String key) {
         return langConfig.getString("messages." + language + "." + key, "");
     }
 
+    /**
+     * Retrieves the currently configured language.
+     *
+     * @return The language code as a string.
+     */
     public String getLanguage() {
         return language;
     }
 
+    /**
+     * Retrieves the prefix for the currently configured language.
+     *
+     * @return The prefix string.
+     */
     public String getPrefix() {
         return prefix;
     }

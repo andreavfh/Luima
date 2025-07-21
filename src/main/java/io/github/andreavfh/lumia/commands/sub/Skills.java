@@ -100,9 +100,10 @@ public class Skills implements SubCommand {
             lore.add(ChatColor.GRAY + " - " + ChatColor.RED + lang.getRaw("no_perks"));
             lore.add("");
         } else {
-            lore.add(ChatColor.GRAY + " - " + type.getMeta().getPerks().getPerk(skill.getTier()).getName());
+            for (int i = 1; i <= skill.getTier(); i++) {
+                lore.add(ChatColor.GRAY + " - " + type.getMeta().getPerks().getPerk(i).getName());
+            }
             lore.add("");
-            lore.add(ChatColor.GRAY + type.getMeta().getPerks().getPerk(skill.getTier()).getDescription());
         }
         // lore.add(ChatColor.DARK_PURPLE + "Tip: " + ChatColor.LIGHT_PURPLE + SkillTips.getTip(type));
 

@@ -3,7 +3,7 @@ version: '${version}'
 main: io.github.andreavfh.lumia.Lumia
 api-version: '1.21'
 prefix: 'Lumia'
-softdepend: [LuckPerms]
+softdepend: [LuckPerms, PlaceholderAPI]
 authors: [andreavfh]
 website: 'https://github.com/andreavfh/Luima'
 description: Level up your skills by performing different activities and unlock unique perks that enhance your gameplay, boost efficiency, and grant powerful abilities.

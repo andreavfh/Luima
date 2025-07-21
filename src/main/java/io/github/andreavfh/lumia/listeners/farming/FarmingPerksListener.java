@@ -32,10 +32,10 @@ public class FarmingPerksListener implements Listener {
         var holder = skillManager.getHolder(player);
         var meta = holder.getSkill(SkillType.FARMING).getType().getMeta();
         int tier = holder.getSkill(SkillType.FARMING).getTier();
-        SkillPerk perk = meta.getPerks().getPerk(tier);
+        SkillPerks perks = meta.getPerks();
 
-        if (perk != null) {
-            perk.apply(player, event);
+        if (perks != null) {
+            SkillPerk.applyAllUpToTier(player, event, meta.getPerks(), tier);
         }
     }
 

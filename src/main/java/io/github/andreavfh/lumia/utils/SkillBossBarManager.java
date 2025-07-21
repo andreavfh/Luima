@@ -17,41 +17,45 @@ import java.util.Map;
 public class SkillBossBarManager {
 
     private final JavaPlugin plugin;
-    private final Map<Player, BossBar> bossBars = new HashMap<>();
+
+    private final Map<Player, Map<SkillType, BossBar>> bossBars = new HashMap<>();
+    private final Map<Player, Map<SkillType, Integer>> removalTasks = new HashMap<>();
 
     public SkillBossBarManager(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
-    private final Map<Player, Integer> removalTasks = new HashMap<>();
+    public void showXP(Player player, SkillType skillType, int currentXP, int requiredXP, int level) {
+        if (currentXP <= 0 || requiredXP <= 0) return;
 
-    public void showXP(Player player, SkillType s, int currentXP, int requiredXP, int level) {
-        BossBar bar = bossBars.computeIfAbsent(player, p ->
-                Bukkit.createBossBar(" ", BarColor.GREEN, BarStyle.SEGMENTED_10)
+        Map<SkillType, BossBar> playerBars = bossBars.computeIfAbsent(player, p -> new HashMap<>());
+        BossBar bar = playerBars.computeIfAbsent(skillType, k ->
+                Bukkit.createBossBar(" ", BarColor.BLUE, BarStyle.SEGMENTED_10)
         );
 
-
-        String skillName = s.getMeta().getDisplayName();
         double progress = Math.min((double) currentXP / requiredXP, 1.0);
-        bar.setProgress(progress);
-
+        String skillName = skillType.getMeta().getDisplayName();
         String levelInRoman = Convert.toRoman(level);
+
+        bar.setProgress(progress);
         bar.setTitle(ChatColor.GRAY + skillName + " " + ChatColor.DARK_GRAY + levelInRoman);
-        bar.setColor(BarColor.BLUE);
 
         if (!bar.getPlayers().contains(player)) {
             bar.addPlayer(player);
         }
 
-        if (removalTasks.containsKey(player)) {
-            Bukkit.getScheduler().cancelTask(removalTasks.get(player));
+        Map<SkillType, Integer> playerRemovals = removalTasks.computeIfAbsent(player, p -> new HashMap<>());
+        if (playerRemovals.containsKey(skillType)) {
+            Bukkit.getScheduler().cancelTask(playerRemovals.get(skillType));
         }
 
         int taskId = Bukkit.getScheduler().runTaskLater(plugin, () -> {
             bar.removePlayer(player);
-            removalTasks.remove(player);
+            playerBars.remove(skillType);
+            playerRemovals.remove(skillType);
         }, 60L).getTaskId();
 
-        removalTasks.put(player, taskId);
+        playerRemovals.put(skillType, taskId);
     }
+
 }

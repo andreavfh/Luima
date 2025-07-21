@@ -31,9 +31,9 @@ public class FishingPerksListener implements Listener {
 
         if (perk != null) {
             if (tier == 5 ) {
-                perk.apply(player, event);
+                SkillPerk.applyAllUpToTier(player, event, meta.getPerks(), tier);
             } else {
-                perk.apply(player);
+                SkillPerk.applyAllUpToTier(player, meta.getPerks(), tier);
             }
         }
     }

@@ -35,14 +35,15 @@ public class SkillManager {
 
         for (SkillType type : SkillType.values()) {
             ISkill skill = holder.getSkill(type);
-            skill.addXP(loadedXP.getOrDefault(type, 0.0));
-            while (skill.getLevel() < loadedLevels.getOrDefault(type, 1)) {
-                skill.levelUp();
-            }
+            int level = loadedLevels.getOrDefault(type, 1);
+            double xp = loadedXP.getOrDefault(type, 0.0);
+
+            skill.restoreState(level, xp);
         }
 
         holders.put(uuid, holder);
     }
+
 
     /**
      * Saves the player's skill data to the database.

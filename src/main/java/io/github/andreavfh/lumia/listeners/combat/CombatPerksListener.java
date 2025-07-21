@@ -26,11 +26,10 @@ public class CombatPerksListener implements Listener {
         int tier = skillManager.getHolder(player).getSkill(SkillType.COMBAT).getTier();
         if (tier <= 0) return;
 
-        SkillPerks perks = SkillType.COMBAT.getMeta().getPerks(); // <- este era el error
-        SkillPerk perk = perks.getPerk(tier);
+        SkillPerks perks = SkillType.COMBAT.getMeta().getPerks();
 
-        if (perk != null) {
-            perk.apply(player, event);
+        if (perks != null) {
+            SkillPerk.applyAllUpToTier(player, event, perks, tier);
         }
     }
 
@@ -42,9 +41,10 @@ public class CombatPerksListener implements Listener {
         int tier = skillManager.getHolder(player).getSkill(SkillType.COMBAT).getTier();
         if (tier < 4) return;
 
-        SkillPerk perk = SkillType.COMBAT.getMeta().getPerks().getPerk(tier);
-        if (perk != null) {
-            perk.apply(player, event);
+        SkillPerks perks = SkillType.COMBAT.getMeta().getPerks();
+
+        if (perks != null) {
+            SkillPerk.applyAllUpToTier(player, event, perks, tier);
         }
     }
 

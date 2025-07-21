@@ -1,10 +1,7 @@
 package io.github.andreavfh.lumia.listeners.foraging;
 
 import io.github.andreavfh.lumia.Lumia;
-import io.github.andreavfh.lumia.skill.SkillManager;
-import io.github.andreavfh.lumia.skill.SkillMeta;
-import io.github.andreavfh.lumia.skill.SkillPerk;
-import io.github.andreavfh.lumia.skill.SkillType;
+import io.github.andreavfh.lumia.skill.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -36,14 +33,11 @@ public class ForagingPerksListener implements Listener {
         if (tier <= 0) return;
 
         SkillMeta meta = SkillType.FORAGING.getMeta();
-        SkillPerk perk = meta.getPerks().getPerk(tier);
-
-        if (perk == null) return;
 
         if (isLog(block.getType()) && (tier != 4)) {
-            perk.apply(player, event);
+            SkillPerk.applyAllUpToTier(player, event, meta.getPerks(), tier);
         } else if (isLeaves(block.getType()) && tier >= 4) {
-            perk.apply(player, event);
+            SkillPerk.applyAllUpToTier(player, event, meta.getPerks(), tier);
         }
     }
 

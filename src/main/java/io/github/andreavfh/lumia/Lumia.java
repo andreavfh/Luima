@@ -6,6 +6,7 @@ import io.github.andreavfh.lumia.config.Config;
 import io.github.andreavfh.lumia.config.LanguageConfig;
 import io.github.andreavfh.lumia.database.DatabaseManager;
 import io.github.andreavfh.lumia.integrations.LuckPermsHook;
+import io.github.andreavfh.lumia.integrations.PlaceholderApiHook;
 import io.github.andreavfh.lumia.listeners.alchemy.AlchemyPerksListener;
 import io.github.andreavfh.lumia.listeners.combat.CombatPerksListener;
 import io.github.andreavfh.lumia.listeners.enchanting.EnchantingPerksListener;
@@ -21,6 +22,7 @@ import io.github.andreavfh.lumia.utils.LoggerWrapper;
 import io.github.andreavfh.lumia.utils.MessageFormatter;
 import io.github.andreavfh.lumia.utils.SkillBossBarManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -85,6 +87,10 @@ public final class Lumia extends JavaPlugin {
 
         this.bossBarManager = new SkillBossBarManager(this);
 
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PlaceholderApiHook(this, getSkillManager()).register();
+        }
+        
         logger.info(languageConfig.getRaw("plugin_enabled"));
     }
 

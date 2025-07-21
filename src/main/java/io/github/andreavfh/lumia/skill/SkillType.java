@@ -127,6 +127,15 @@ public enum SkillType {
 
     private final SkillMeta meta = new SkillMeta(this); // 🧠 Instancia única y compartida
 
+    public static SkillType fromKey(String lowerCase) {
+        for (SkillType type : values()) {
+            if (type.getKey().equalsIgnoreCase(lowerCase)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
     public abstract ISkill createInstance(Player player);
 
     public abstract String getKey();

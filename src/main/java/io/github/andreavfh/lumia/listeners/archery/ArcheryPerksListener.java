@@ -34,10 +34,9 @@ public class ArcheryPerksListener implements Listener {
 
         SkillPerks perks = SkillType.ARCHERY.getMeta()
                 .getPerks();
-        SkillPerk perk = perks.getPerk(tier);
 
-        if (perk != null) {
-            perk.apply(player, event);
+        if (perks != null) {
+            SkillPerk.applyAllUpToTier(player, event, perks, tier);
         }
     }
 

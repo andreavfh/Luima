@@ -7,16 +7,32 @@ import io.github.andreavfh.lumia.skill.SkillType;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+/**
+ * Handles the registration of perks for all skills in the game.
+ * Dynamically loads and invokes static registration methods in perk listener classes
+ * based on the skill type.
+ */
 public class RegisterPerks {
 
     private final SkillManager skillManager;
     private final Lumia plugin;
 
+    /**
+     * Constructs a new RegisterPerks instance.
+     *
+     * @param skillManager The SkillManager instance for managing player skills.
+     * @param plugin       The Lumia plugin instance.
+     */
     public RegisterPerks(SkillManager skillManager, Lumia plugin) {
         this.skillManager = skillManager;
         this.plugin = plugin;
     }
 
+    /**
+     * Registers all perks for each skill type.
+     * Dynamically locates and invokes static registration methods in listener classes
+     * corresponding to each skill type.
+     */
     public void registerAllPerks() {
         for (SkillType type : SkillType.values()) {
             try {
@@ -27,7 +43,7 @@ public class RegisterPerks {
                 for (Method method : clazz.getDeclaredMethods()) {
                     if (method.getName().startsWith("register") && java.lang.reflect.Modifier.isStatic(method.getModifiers())) {
 
-                        // Detecta argumentos esperados por el método
+                        // Detects expected arguments for the method
                         Object[] fullArgs = Arrays.stream(method.getParameterTypes()).map(param -> {
                             if (param == SkillMeta.class) return meta;
                             if (param == SkillManager.class) return skillManager;
@@ -36,7 +52,7 @@ public class RegisterPerks {
                         }).toArray();
 
                         method.invoke(null, fullArgs);
-                        break; // Solo invocamos el primer método válido
+                        break; // Invokes only the first valid method
                     }
                 }
 
@@ -47,7 +63,13 @@ public class RegisterPerks {
         }
     }
 
-    // Utilidad para capitalizar tipo de habilidad (e.g., FISHING → Fishing)
+    /**
+     * Capitalizes the skill type name for class name formatting.
+     * Converts a skill type name (e.g., FISHING) to a capitalized format (e.g., Fishing).
+     *
+     * @param input The skill type name in uppercase.
+     * @return The capitalized skill type name.
+     */
     private String capitalize(String input) {
         input = input.toLowerCase();
         return input.substring(0, 1).toUpperCase() + input.substring(1);

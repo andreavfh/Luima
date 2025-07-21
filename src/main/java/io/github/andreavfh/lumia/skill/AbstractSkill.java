@@ -182,4 +182,16 @@ public abstract class AbstractSkill implements ISkill {
         plugin.getMessageFormatter().sendMessage(player, message);
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
     }
+
+    /**
+     * Restores the skill state from saved data.
+     *
+     * @param level The level to restore.
+     * @param xp    The XP to restore.
+     */
+    @Override
+    public void restoreState(int level, double xp) {
+        this.level = level;
+        this.xp = xp;
+    }
 }

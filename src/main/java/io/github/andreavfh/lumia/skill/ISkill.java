@@ -81,4 +81,6 @@ public interface ISkill {
      * @return The rank of the skill as a string.
      */
     String getRank();
+
+    void restoreState(int xp, double v);
 }

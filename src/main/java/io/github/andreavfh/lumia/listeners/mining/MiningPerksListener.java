@@ -34,12 +34,9 @@ public class MiningPerksListener implements Listener {
         if (tier <= 0) return;
 
         SkillMeta meta = SkillType.MINING.getMeta();
-        SkillPerk perk = meta.getPerks().getPerk(tier);
-
-        if (perk != null) {
-            perk.apply(player, event);
-        }
+        SkillPerk.applyAllUpToTier(player, event, meta.getPerks(), tier);
     }
+
 
     public static List<Block> getNearbySameTypeBlocks(Block origin, int limit) {
         Set<Block> result = new HashSet<>();

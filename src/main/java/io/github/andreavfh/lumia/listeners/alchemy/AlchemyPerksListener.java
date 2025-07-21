@@ -47,9 +47,9 @@ public class AlchemyPerksListener implements Listener {
             int tier = skillManager.getHolder(player).getSkill(SkillType.ALCHEMY).getTier();
             if (tier <= 0) continue;
 
-            SkillPerk perk = SkillType.ALCHEMY.getMeta().getPerks().getPerk(tier);
-            if (perk != null) {
-                perk.apply(player, event);
+            SkillPerks perks = SkillType.ALCHEMY.getMeta().getPerks();
+            if (perks != null) {
+                SkillPerk.applyAllUpToTier(player, event, perks, tier);
             }
         }
     }
@@ -61,9 +61,10 @@ public class AlchemyPerksListener implements Listener {
         int tier = skillManager.getHolder(player).getSkill(SkillType.ALCHEMY).getTier();
         if (tier <= 0) return;
 
-        SkillPerk perk = SkillType.ALCHEMY.getMeta().getPerks().getPerk(tier);
-        if (perk != null) {
-            perk.apply(player, event);
+        SkillPerks perks = SkillType.ALCHEMY.getMeta().getPerks();
+
+        if (perks != null) {
+            SkillPerk.applyAllUpToTier(player, event, perks, tier);
         }
     }
 
@@ -74,9 +75,10 @@ public class AlchemyPerksListener implements Listener {
         int tier = skillManager.getHolder(player).getSkill(SkillType.ALCHEMY).getTier();
         if (tier <= 0) return;
 
-        SkillPerk perk = SkillType.ALCHEMY.getMeta().getPerks().getPerk(tier);
-        if (perk != null) {
-            perk.apply(player, event);
+        SkillPerks perks = SkillType.ALCHEMY.getMeta().getPerks();
+
+        if (perks != null) {
+            SkillPerk.applyAllUpToTier(player, event, perks, tier);
         }
     }
 

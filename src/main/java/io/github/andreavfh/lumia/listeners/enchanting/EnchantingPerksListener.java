@@ -26,10 +26,9 @@ public class EnchantingPerksListener implements Listener {
         SkillPerks perks = SkillType.ENCHANTING.getMeta()
                 .getPerks();
         int tier = skillManager.getHolder(player).getSkill(SkillType.ENCHANTING).getTier();
-        SkillPerk perk = perks.getPerk(tier);
 
-        if (perk != null) {
-            perk.apply(player, event);
+        if (perks != null) {
+            SkillPerk.applyAllUpToTier(player, event, perks, tier);
         }
 
     }
@@ -42,10 +41,9 @@ public class EnchantingPerksListener implements Listener {
                 .getPerks();
 
         int tier = skillManager.getHolder(player).getSkill(SkillType.ENCHANTING).getTier();
-        SkillPerk perk = perks.getPerk(tier);
 
-        if (perk != null) {
-            perk.apply(player, event);
+        if (perks != null) {
+            SkillPerk.applyAllUpToTier(player, event, perks, tier);
         }
     }
 
