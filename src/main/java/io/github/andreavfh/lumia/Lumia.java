@@ -6,7 +6,17 @@ import io.github.andreavfh.lumia.config.Config;
 import io.github.andreavfh.lumia.config.LanguageConfig;
 import io.github.andreavfh.lumia.database.DatabaseManager;
 import io.github.andreavfh.lumia.integrations.LuckPermsHook;
+import io.github.andreavfh.lumia.listeners.alchemy.AlchemyPerksListener;
+import io.github.andreavfh.lumia.listeners.combat.CombatPerksListener;
+import io.github.andreavfh.lumia.listeners.enchanting.EnchantingPerksListener;
+import io.github.andreavfh.lumia.listeners.farming.FarmingPerksListener;
+import io.github.andreavfh.lumia.listeners.fishing.FishingPerksListener;
+import io.github.andreavfh.lumia.listeners.foraging.ForagingPerksListener;
+import io.github.andreavfh.lumia.listeners.mining.MiningPerksListener;
+import io.github.andreavfh.lumia.listeners.smithing.SmithingPerksListener;
 import io.github.andreavfh.lumia.skill.SkillManager;
+import io.github.andreavfh.lumia.skill.SkillMeta;
+import io.github.andreavfh.lumia.skill.SkillType;
 import io.github.andreavfh.lumia.utils.LoggerWrapper;
 import io.github.andreavfh.lumia.utils.MessageFormatter;
 import io.github.andreavfh.lumia.utils.SkillBossBarManager;
@@ -59,6 +69,10 @@ public final class Lumia extends JavaPlugin {
         }
 
         this.skillManager = new SkillManager(databaseManager.getSqlStorage());
+
+        RegisterPerks reg = new RegisterPerks(skillManager, this);
+        reg.registerAllPerks();
+
 
         CommandHandler handler = new CommandHandler(this);
         getCommand("lumia").setExecutor(handler);

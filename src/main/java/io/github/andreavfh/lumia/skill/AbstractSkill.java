@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Abstract base implementation of the ISkill interface.
- * Handles common logic for all skill types (XP, level-ups, tiers, etc).
+ * Handles common logic for all skill types (XP, level-ups, tiers, etc.).
  */
 public abstract class AbstractSkill implements ISkill {
 
@@ -89,7 +89,7 @@ public abstract class AbstractSkill implements ISkill {
 
         plugin.getBossBarManager().showXP(
                 player,
-                type.name(),
+                type,
                 (int) xp,
                 (int) getXPForNextLevel(),
                 level

@@ -2,6 +2,7 @@ package io.github.andreavfh.lumia.utils;
 
 import io.github.andreavfh.lumia.config.Config;
 import io.github.andreavfh.lumia.config.LanguageConfig;
+import io.github.andreavfh.lumia.skill.SkillType;
 import org.bukkit.ChatColor;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -24,15 +25,13 @@ public class SkillBossBarManager {
 
     private final Map<Player, Integer> removalTasks = new HashMap<>();
 
-    public void showXP(Player player, String s, int currentXP, int requiredXP, int level) {
+    public void showXP(Player player, SkillType s, int currentXP, int requiredXP, int level) {
         BossBar bar = bossBars.computeIfAbsent(player, p ->
                 Bukkit.createBossBar(" ", BarColor.GREEN, BarStyle.SEGMENTED_10)
         );
 
-        Config config = new Config(plugin);
-        LanguageConfig languageConfig = new LanguageConfig(plugin, config);
 
-        String skillName = languageConfig.getRaw("skill_" + s.toLowerCase() + "_name");
+        String skillName = s.getMeta().getDisplayName();
         double progress = Math.min((double) currentXP / requiredXP, 1.0);
         bar.setProgress(progress);
 

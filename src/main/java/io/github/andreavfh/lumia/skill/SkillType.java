@@ -3,10 +3,6 @@ package io.github.andreavfh.lumia.skill;
 import io.github.andreavfh.lumia.skill.skills.*;
 import org.bukkit.entity.Player;
 
-/**
- * Enum representing different skill types in the game.
- * Each skill type can create an instance of its corresponding skill and has an associated config key.
- */
 public enum SkillType {
 
     FARMING {
@@ -129,18 +125,13 @@ public enum SkillType {
         }
     };
 
-    /**
-     * Abstract method to create an instance of the skill associated with the skill type.
-     *
-     * @param player The player for whom the skill instance is created.
-     * @return A new instance of the skill.
-     */
+    private final SkillMeta meta = new SkillMeta(this); // 🧠 Instancia única y compartida
+
     public abstract ISkill createInstance(Player player);
 
-    /**
-     * Gets the configuration key associated with this skill type.
-     *
-     * @return A lowercase string key.
-     */
     public abstract String getKey();
+
+    public SkillMeta getMeta() {
+        return meta;
+    }
 }

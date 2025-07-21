@@ -2,9 +2,11 @@ package io.github.andreavfh.lumia.commands.sub;
 
 import io.github.andreavfh.lumia.Lumia;
 import io.github.andreavfh.lumia.commands.SubCommand;
+import io.github.andreavfh.lumia.config.LanguageConfig;
 import io.github.andreavfh.lumia.skill.ISkill;
 import io.github.andreavfh.lumia.skill.SkillManager;
 import io.github.andreavfh.lumia.skill.SkillType;
+import io.github.andreavfh.lumia.utils.Convert;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,6 +21,7 @@ import java.util.List;
 
 public class Skills implements SubCommand {
 
+    public static final String MENU_TITLE = ChatColor.GOLD + "Skills";
     private final Lumia plugin;
 
     public Skills(Lumia plugin) {
@@ -42,40 +45,72 @@ public class Skills implements SubCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (!(sender instanceof Player player)) {
-            return;
-        }
+        if (!(sender instanceof Player player)) return;
 
-
-
-        SkillType[] types = SkillType.values();
         SkillManager skillManager = plugin.getSkillManager();
-        int size = ((types.length + 8) / 9) * 9;
-        Inventory inv = Bukkit.createInventory(null, size, ChatColor.DARK_GREEN + "Your Skills");
+        SkillType[] skillTypes = SkillType.values();
+        int inventorySize = ((skillTypes.length + 8) / 9) * 9;
 
-        for (SkillType type : types) {
-            ISkill skill = skillManager.getHolder(((Player) sender).getPlayer()).getSkill(type);
+        Inventory inventory = Bukkit.createInventory(null, inventorySize, MENU_TITLE);
+
+        for (SkillType type : skillTypes) {
+            ISkill skill = skillManager.getHolder(player).getSkill(type);
             if (skill == null) continue;
 
-            ItemStack item = new ItemStack(getSkillIcon(type));
-            ItemMeta meta = item.getItemMeta();
-            assert meta != null;
-            meta.setDisplayName(ChatColor.GOLD + capitalize(type.name()));
-
-            List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.GRAY + "Level: " + ChatColor.GREEN + skill.getLevel());
-            lore.add(ChatColor.GRAY + "XP: " + ChatColor.AQUA + String.format("%.2f", skill.getCurrentXP()) + " / " + skill.getXPForNextLevel());
-            lore.add(ChatColor.GRAY + "Rank: " + ChatColor.YELLOW + skill.getRank());
-            lore.add("");
-            // Todo: lore.add(ChatColor.DARK_PURPLE + "Tip: " + ChatColor.LIGHT_PURPLE + SkillTips.getTip(type));
-
-            meta.setLore(lore);
-            item.setItemMeta(meta);
-
-            inv.addItem(item);
+            ItemStack skillItem = createSkillItem(type, skill);
+            inventory.addItem(skillItem);
         }
 
-        player.openInventory(inv);
+        player.openInventory(inventory);
+    }
+
+    private ItemStack createSkillItem(SkillType type, ISkill skill) {
+        Material icon = getSkillIcon(type);
+        ItemStack item = new ItemStack(icon);
+        ItemMeta meta = item.getItemMeta();
+        assert meta != null;
+
+        LanguageConfig lang = plugin.getLanguageConfig();
+
+        String levelRoman = Convert.toRoman(skill.getLevel());
+        String nextLevelRoman = Convert.toRoman(skill.getLevel() + 1);
+        String displayName = ChatColor.GOLD + type.getMeta().getDisplayName() + " " + levelRoman;
+
+        double currentXP = skill.getCurrentXP();
+        double xpNeeded = skill.getXPForNextLevel();
+        int percent = (int) Math.min(100.0, (currentXP / xpNeeded) * 100.0);
+
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + type.getMeta().getDescription());
+        lore.add("");
+        lore.add(ChatColor.YELLOW + skill.getRank() + " " + levelRoman);
+        lore.add("");
+        String progress = lang.getRaw("progress_to_level")
+                .replace("{level}", ChatColor.YELLOW + nextLevelRoman + ChatColor.GRAY)
+                + ": "
+                + ChatColor.AQUA + String.format("%d%%", percent)
+                + ChatColor.GRAY + " (" + ChatColor.AQUA + String.format("%d", (int) currentXP)
+                + ChatColor.DARK_GRAY + "/"
+                + ChatColor.AQUA + (int) xpNeeded + ChatColor.GRAY + ")";
+
+        lore.add(progress);
+        lore.add("");
+        lore.add(ChatColor.DARK_GRAY + lang.getRaw("level_perks"));
+        if (skill.getTier() <= 0) {
+            lore.add(ChatColor.GRAY + " - " + ChatColor.RED + lang.getRaw("no_perks"));
+            lore.add("");
+        } else {
+            lore.add(ChatColor.GRAY + " - " + type.getMeta().getPerks().getPerk(skill.getTier()).getName());
+            lore.add("");
+            lore.add(ChatColor.GRAY + type.getMeta().getPerks().getPerk(skill.getTier()).getDescription());
+        }
+        // lore.add(ChatColor.DARK_PURPLE + "Tip: " + ChatColor.LIGHT_PURPLE + SkillTips.getTip(type));
+
+        meta.setDisplayName(displayName);
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+
+        return item;
     }
 
     private Material getSkillIcon(SkillType type) {
@@ -91,10 +126,6 @@ public class Skills implements SubCommand {
             case AGILITY -> Material.FEATHER;
             case SMITHING -> Material.SMITHING_TABLE;
         };
-    }
-
-    private String capitalize(String input) {
-        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
     }
 
     @Override

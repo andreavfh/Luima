@@ -2,6 +2,8 @@ package io.github.andreavfh.lumia.listeners.foraging;
 
 import io.github.andreavfh.lumia.Lumia;
 import io.github.andreavfh.lumia.skill.SkillManager;
+import io.github.andreavfh.lumia.skill.SkillMeta;
+import io.github.andreavfh.lumia.skill.SkillPerk;
 import io.github.andreavfh.lumia.skill.SkillType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -14,155 +16,132 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.plugin.java.JavaPlugin;
 
-/**
- * Listener encargado de aplicar las ventajas (perks) de la habilidad {@code FORAGING}
- * según el tier alcanzado por el jugador. Estas ventajas se activan al romper troncos o hojas.
- *
- * <p>Tier 1: Posibilidad de duplicar drops de madera.<br>
- * Tier 2: Probabilidad de obtener una manzana adicional al talar robles.<br>
- * Tier 3: Aplicación de efecto de rapidez al usar hachas.<br>
- * Tier 4: Mayor probabilidad de romper hojas cercanas.<br>
- * Tier 5: Replantado automático de brotes/saplings al talar.</p>
- *
- * @author byWolff_
- */
 public class ForagingPerksListener implements Listener {
 
     private final SkillManager skillManager;
     private final Lumia plugin;
 
-    /**
-     * Constructor del listener de forrajeo.
-     *
-     * @param skillManager Manejador de habilidades de los jugadores.
-     */
-    public ForagingPerksListener(SkillManager skillManager) {
+    public ForagingPerksListener(SkillManager skillManager, Lumia plugin) {
         this.skillManager = skillManager;
-        this.plugin = JavaPlugin.getPlugin(Lumia.class);
+        this.plugin = plugin;
     }
 
-    /**
-     * Evento que se ejecuta cuando un jugador rompe un bloque.
-     * Evalúa si el bloque es madera o hojas y aplica los perks correspondientes según el tier.
-     *
-     * @param event Evento de ruptura de bloque.
-     */
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
+
         int tier = skillManager.getHolder(player).getSkill(SkillType.FORAGING).getTier();
 
-        if (isLog(block.getType())) {
-            handleLogBreak(player, block, tier);
-        }
+        if (tier <= 0) return;
 
-        if (isLeaves(block.getType())) {
-            handleLeafBreak(block, tier);
+        SkillMeta meta = SkillType.FORAGING.getMeta();
+        SkillPerk perk = meta.getPerks().getPerk(tier);
+
+        if (perk == null) return;
+
+        if (isLog(block.getType()) && (tier != 4)) {
+            perk.apply(player, event);
+        } else if (isLeaves(block.getType()) && tier >= 4) {
+            perk.apply(player, event);
         }
     }
 
-    /**
-     * Lógica para aplicar perks al romper bloques de madera.
-     *
-     * @param player Jugador que rompió el bloque.
-     * @param block Bloque de tronco roto.
-     * @param tier Nivel de tier de la habilidad Foraging del jugador.
-     */
-    private void handleLogBreak(Player player, Block block, int tier) {
-        Location location = block.getLocation();
-        ItemStack tool = player.getInventory().getItemInMainHand();
+    public static void registerForagingPerks(SkillMeta meta, Lumia plugin) {
 
-        // Tier 1: Duplicar drops de madera con 10% de probabilidad
-        if (tier >= 1 && Math.random() < 0.10) {
-            block.getDrops(tool).forEach(drop ->
-                    block.getWorld().dropItemNaturally(location, drop.clone())
-            );
-        }
-
-        // Tier 2: Drop extra de manzana al talar roble con 10% de probabilidad
-        if (tier >= 2 && block.getType() == Material.OAK_LOG && Math.random() < 0.10) {
-            block.getWorld().dropItemNaturally(location, new ItemStack(Material.APPLE));
-        }
-
-        // Tier 3: Aplicar efecto de Haste (Rapidez) al usar hacha
-        if (tier >= 3 && isAxe(tool.getType())) {
-            player.addPotionEffect(new PotionEffect(
-                    PotionEffectType.HASTE,
-                    60, // 3 segundos (20 ticks por segundo)
-                    0, // Nivel 1
-                    true, // Ambient
-                    false, // Sin partículas
-                    false  // Sin icono
-            ));
-        }
-
-        // Tier 5: Replantar automáticamente un sapling correspondiente 2 segundos después
-        if (tier >= 5) {
-            Material sapling = getCorrespondingSapling(block.getType());
-            if (sapling != null) {
-                Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                    Block current = location.getBlock();
-                    if (current.getType() == Material.AIR || current.getType() == Material.CAVE_AIR) {
-                        current.setType(sapling);
-                        current.getWorld().playSound(location, Sound.ITEM_CROP_PLANT, 1f, 1.2f);
-                        current.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, location.add(0.5, 0.5, 0.5), 10);
+        meta.getPerks().setPerk(1, new SkillPerk(
+                "Doble drop de madera",
+                "10% de probabilidad de duplicar drops de madera al talar.",
+                (player, context) -> {
+                    if (context instanceof BlockBreakEvent event) {
+                        Block block = event.getBlock();
+                        if (Math.random() < 0.10) {
+                            ItemStack tool = player.getInventory().getItemInMainHand();
+                            block.getDrops(tool).forEach(drop ->
+                                    block.getWorld().dropItemNaturally(block.getLocation(), drop.clone())
+                            );
+                        }
                     }
-                }, 40L); // 2 segundos (40 ticks)
-            }
-        }
+                }
+        ));
+
+        meta.getPerks().setPerk(2, new SkillPerk(
+                "Manzana extra",
+                "10% de probabilidad de soltar una manzana extra al talar robles.",
+                (player, context) -> {
+                    if (context instanceof BlockBreakEvent event) {
+                        Block block = event.getBlock();
+                        if (block.getType() == Material.OAK_LOG && Math.random() < 0.10) {
+                            block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.APPLE));
+                        }
+                    }
+                }
+        ));
+
+        meta.getPerks().setPerk(3, new SkillPerk(
+                "Rapidez al talar",
+                "Obtienes Haste (rapidez) I por 3 segundos cuando usas hacha.",
+                (player, context) -> {
+                    if (context instanceof BlockBreakEvent event) {
+                        ItemStack tool = player.getInventory().getItemInMainHand();
+                        if (isAxe(tool.getType())) {
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 60, 0, true, false, false));
+                        }
+                    }
+                }
+        ));
+
+        // Tier 4 es para hojas, rompimiento extra
+        meta.getPerks().setPerk(4, new SkillPerk(
+                "Rompimiento de hojas",
+                "25% de probabilidad de romper hojas cercanas cuando rompes una hoja.",
+                (player, context) -> {
+                    if (context instanceof BlockBreakEvent event) {
+                        Block block = event.getBlock();
+                        if (Math.random() < 0.25) {
+                            block.breakNaturally();
+                        }
+                    }
+                }
+        ));
+
+        meta.getPerks().setPerk(5, new SkillPerk(
+                "Replantado automático",
+                "Replanta automáticamente un sapling tras talar un árbol.",
+                (player, context) -> {
+                    if (context instanceof BlockBreakEvent event) {
+                        Block block = event.getBlock();
+                        Material sapling = getCorrespondingSapling(block.getType());
+                        if (sapling != null) {
+                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                Block current = block.getLocation().getBlock();
+                                if (current.getType() == Material.AIR || current.getType() == Material.CAVE_AIR) {
+                                    current.setType(sapling);
+                                    current.getWorld().playSound(current.getLocation(), Sound.ITEM_CROP_PLANT, 1f, 1.2f);
+                                    current.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, current.getLocation().add(0.5, 0.5, 0.5), 10);
+                                }
+                            }, 40L);
+                        }
+                    }
+                }
+        ));
     }
 
-    /**
-     * Lógica para romper hojas cercanas al romper una hoja.
-     * Solo aplica desde el tier 4 en adelante con una probabilidad del 25%.
-     *
-     * @param block Bloque de hoja roto.
-     * @param tier Nivel de tier de la habilidad Foraging del jugador.
-     */
-    private void handleLeafBreak(Block block, int tier) {
-        if (tier >= 4 && Math.random() < 0.25) {
-            block.breakNaturally();
-        }
-    }
+    // Helpers
 
-    /**
-     * Verifica si un material es un tipo de tronco.
-     *
-     * @param type Material a comprobar.
-     * @return {@code true} si es tronco o tallo (stem), {@code false} en caso contrario.
-     */
-    private boolean isLog(Material type) {
+    private static boolean isLog(Material type) {
         return type.name().endsWith("_LOG") || type.name().endsWith("_STEM");
     }
 
-    /**
-     * Verifica si un material es un tipo de hoja.
-     *
-     * @param type Material a comprobar.
-     * @return {@code true} si es un bloque de hojas, {@code false} en caso contrario.
-     */
-    private boolean isLeaves(Material type) {
+    private static boolean isLeaves(Material type) {
         return type.name().endsWith("_LEAVES");
     }
 
-    /**
-     * Verifica si el material proporcionado es un hacha.
-     *
-     * @param material Material del ítem.
-     * @return {@code true} si el ítem es un hacha, {@code false} en caso contrario.
-     */
-    private boolean isAxe(Material material) {
+    private static boolean isAxe(Material material) {
         return material.name().endsWith("_AXE");
     }
 
-    /**
-     * Obtiene el sapling (brote) correspondiente al tipo de tronco proporcionado.
-     *
-     * @param log Tipo de madera.
-     * @return Tipo de sapling relacionado, o {@code null} si no hay coincidencia.
-     */
-    private Material getCorrespondingSapling(Material log) {
+    private static Material getCorrespondingSapling(Material log) {
         return switch (log) {
             case OAK_LOG -> Material.OAK_SAPLING;
             case SPRUCE_LOG -> Material.SPRUCE_SAPLING;
@@ -177,4 +156,5 @@ public class ForagingPerksListener implements Listener {
             default -> null;
         };
     }
+
 }

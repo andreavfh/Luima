@@ -1,5 +1,5 @@
 name: Lumia
-version: '1.0-SNAPSHOT'
+version: '1.0-RELEASE'
 main: io.github.andreavfh.lumia.Lumia
 api-version: '1.21'
 prefix: 'Lumia'

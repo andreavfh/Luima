@@ -51,6 +51,12 @@ messages:
 
     alchemy_bonus_potion: "§7You duplicated a potion!"  # Message when a potion is duplicated
 
+    progress_to_level: "Progress to level {level}"  # Message showing progress to the next level
+
+    level_perks: "Level perks"  # Message showing available perks when leveling up
+
+    no_perks: "§cNo perks available for this level."  # Message when no perks are available for the current level
+
     # Skill names
     skill_farming_name: "Farming"
     skill_combat_name: "Combat"
@@ -62,6 +68,18 @@ messages:
     skill_smithing_name: "Smithing"
     skill_foraging_name: "Foraging"
     skill_enchanting_name: "Enchanting"
+
+    # Skill descriptions
+    skill_farming_description: "Cultivate crops and raise animals to gather resources."
+    skill_combat_description: "Engage in battles and defeat enemies to improve your combat skills."
+    skill_fishing_description: "Catch fish and gather aquatic resources from bodies of water."
+    skill_mining_description: "Mine ores and gather minerals from the earth."
+    skill_alchemy_description: "Brew potions to get various effects and benefits."
+    skill_archery_description: "Master the bow and arrow to hit targets from a distance."
+    skill_agility_description: "Improve your agility to dodge attacks and move faster."
+    skill_smithing_description: "Forge weapons and armor to enhance your combat capabilities."
+    skill_foraging_description: "Collect resources from nature, such as wood and plants."
+    skill_enchanting_description: "Enchant items to give them special abilities and enhancements."
 
     # Skill ranks by tier (0–5)
     skills_farming_0: "Farming Novice"
@@ -184,6 +202,12 @@ messages:
 
     alchemy_bonus_potion: "§7¡Has duplicado una poción!"  # Mensaje cuando se duplica una poción
 
+    progress_to_level: "Progreso al nivel {level}"  # Mensaje de progreso al siguiente nivel
+
+    level_perks: "Perks de nivel"  # Mensaje que muestra los perks disponibles al subir de nivel
+
+    no_perks: "No hay perks disponibles para este nivel."  # Mensaje cuando no hay perks disponibles para el nivel actual
+
     # Nombres de habilidades
     skill_farming_name: "Agricultura"
     skill_combat_name: "Combate"
@@ -195,6 +219,18 @@ messages:
     skill_smithing_name: "Herrería"
     skill_foraging_name: "Recolección"
     skill_enchanting_name: "Encantamientos"
+
+    # Descripciones de habilidades
+    skill_farming_description: "Cultiva cultivos y cría animales para recolectar recursos."
+    skill_combat_description: "Participa en batallas y derrota enemigos para mejorar tus habilidades de combate."
+    skill_fishing_description: "Pesca peces y recolecta recursos acuáticos de cuerpos de agua."
+    skill_mining_description: "Extrae minerales y recolecta recursos de la tierra."
+    skill_alchemy_description: "Prepara pociones para obtener varios efectos y beneficios."
+    skill_archery_description: "Domina el arco y la flecha para golpear objetivos a distancia."
+    skill_agility_description: "Mejora tu agilidad para esquivar ataques y moverte más rápido."
+    skill_smithing_description: "Forja armas y armaduras para mejorar tus capacidades de combate."
+    skill_foraging_description: "Recolecta recursos de la naturaleza, como madera y plantas."
+    skill_enchanting_description: "Encanta objetos para otorgarles habilidades y mejoras especiales."
 
     # Rangos de habilidades por nivel (0–5)
     skills_farming_0: "Novato en Agricultura"
